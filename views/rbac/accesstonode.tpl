@@ -1,7 +1,7 @@
 {{template "../public/header.tpl"}}
 <script type="text/javascript">
     var roleid = {{.roleid}};
-    var grouplist=$.parseJSON({{.grouplist | stringsToJson}});
+    var grouplist=$.parseJSON({{.grouplist}});
     var URL="/rbac/role"
 $(function(){
     //授权列表

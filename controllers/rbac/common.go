@@ -2,8 +2,7 @@ package rbac
 
 import (
 	"github.com/astaxie/beego"
-	. "github.com/beego/admin/src"
-	m "github.com/beego/admin/src/models"
+	m "class-admin/models"
 )
 
 type CommonController struct {
@@ -17,11 +16,7 @@ func (this *CommonController) Rsp(status bool, str string) {
 }
 
 func (this *CommonController) GetTemplatetype() string {
-	templatetype := beego.AppConfig.String("template_type")
-	if templatetype == "" {
-		templatetype = "easyui"
-	}
-	return templatetype
+	return ""
 }
 
 func (this *CommonController) GetTree() []Tree {
@@ -30,12 +25,19 @@ func (this *CommonController) GetTree() []Tree {
 	for k, v := range nodes {
 		tree[k].Id = v["Id"].(int64)
 		tree[k].Text = v["Title"].(string)
+		tree[k].IconCls = v["Logo"].(string)
+		tree[k].Attributes.DivId = v["DivId"].(string)
 		children, _ := m.GetNodeTree(v["Id"].(int64), 2)
+		if len(children)==0{
+			tree[k].Attributes.Url="/"+v["Name"].(string)
+		}
 		tree[k].Children = make([]Tree, len(children))
 		for k1, v1 := range children {
 			tree[k].Children[k1].Id = v1["Id"].(int64)
 			tree[k].Children[k1].Text = v1["Title"].(string)
 			tree[k].Children[k1].Attributes.Url = "/" + v["Name"].(string) + "/" + v1["Name"].(string)
+			tree[k].Children[k1].IconCls = v1["Logo"].(string)
+			tree[k].Children[k1].Attributes.DivId = v1["DivId"].(string)
 		}
 	}
 	return tree

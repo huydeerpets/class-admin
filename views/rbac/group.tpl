@@ -1,5 +1,14 @@
-{{template "../public/header.tpl"}}
-
+{{template "public/header.tpl" .}}
+    <link rel = "stylesheet" type = "text/css" href ="/static/plugins/easyui/css/easyui.css" />
+    <link rel = "stylesheet" type = "text/css" href ="/static/plugins/easyui/css/insdep_theme_default.css" />
+    <link rel = "stylesheet" type ="text/css" href = "/static/plugins/easyui/css/icon.css" />
+    <script type = "text/javascript" src = "/static/plugins/easyui/jquery.easyui.min.js"></script>
+    <script type = "text/javascript" src = "/static/plugins/easyui/jquery.insdep-extend.min.js"></script>
+    <script type = "text/javascript" src = "/static/js/common.js"></script>
+    <script src="/static/js/jquery-datagrid-clientpaging.js"></script>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+{{template "public/menu.tpl" .}}
 <script type="text/javascript">
 var statuslist = [
     {id:'1',text:'禁用'},
@@ -18,7 +27,6 @@ $(function(){
         rownumbers:true,
         singleSelect:true,
         idField:'id',
-        pagination:true,
         pageSize:20,
         pageList:[10,20,30,50,100],
         columns:[[
@@ -113,7 +121,10 @@ $(function(){
     });
 
 })
-
+activeDiv=function () {
+    $('#access-li').addClass('active');
+    $('#group-li').addClass('active');
+};
 function editrow(){
     if(!$("#datagrid").datagrid("getSelected")){
         vac.alert("请选择要编辑的行");
@@ -167,9 +178,9 @@ function delrow(){
     });
 }
 </script>
-<body>
+    <div class="content-wrapper">
 <table id="datagrid" toolbar="#tb"></table>
-<div id="tb" style="padding:5px;height:auto">
+<div id="tb" style="padding:5px;height:auto;display: none">
     <a href="#" icon='icon-add' plain="true" onclick="addrow()" class="easyui-linkbutton" >新增</a>
     <a href="#" icon='icon-edit' plain="true" onclick="editrow()" class="easyui-linkbutton" >编辑</a>
     <a href="#" icon='icon-save' plain="true" onclick="saverow()" class="easyui-linkbutton" >保存</a>
@@ -192,7 +203,7 @@ function delrow(){
 <div id="mm1" class="easyui-menu" style="width:120px;display: none"  >
     <div icon='icon-add' onclick="addrow()">新增</div>
 </div>
-<div id="dialog" title="添加分组" style="width:400px;height:300px;">
+<div id="dialog" title="添加分组" style="width:400px;height:300px;display: none">
     <div style="padding:20px 20px 40px 80px;" >
         <form id="form1" method="post">
             <table>
@@ -221,5 +232,6 @@ function delrow(){
         </form>
     </div>
 </div>
-</body>
-</html>
+    </div>
+</div>
+{{template "public/footer.tpl" .}}

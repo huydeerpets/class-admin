@@ -11,13 +11,16 @@ import (
 
 //节点表
 type Node struct {
-	Id     int64
+	Id     int64   `json:"id"`
 	Title  string  `orm:"size(100)" form:"Title"  valid:"Required"`
 	Name   string  `orm:"size(100)" form:"Name"  valid:"Required"`
 	Level  int     `orm:"default(1)" form:"Level"  valid:"Required"`
 	Pid    int64   `form:"Pid"  valid:"Required"`
 	Remark string  `orm:"null;size(200)" form:"Remark" valid:"MaxSize(200)"`
 	Status int     `orm:"default(2)" form:"Status" valid:"Range(1,2)"`
+	DivId  string  `orm:"size(100)" form:"DivId"`
+	Logo   string  `orm:"size(100)" form:"Logo"`
+
 	Group  *Group  `orm:"rel(fk)"`
 	Role   []*Role `orm:"rel(m2m)"`
 }
@@ -54,7 +57,10 @@ func GetNodelist(page int64, page_size int64, sort string) (nodes []orm.Params, 
 	} else {
 		offset = (page - 1) * page_size
 	}
-	qs.Limit(page_size, offset).OrderBy(sort).Values(&nodes, "Id", "Title", "Name", "Status", "Pid", "Remark", "Group__id")
+	_,err:=qs.Limit(page_size, offset).OrderBy(sort).Values(&nodes)
+	if err!=nil{
+
+	}
 	count, _ = qs.Count()
 	return nodes, count
 }
@@ -83,6 +89,8 @@ func AddNode(n *Node) (int64, error) {
 	node.Remark = n.Remark
 	node.Status = n.Status
 	node.Group = n.Group
+	node.DivId = n.DivId
+	node.Logo = n.Logo
 
 	id, err := o.Insert(node)
 	return id, err
@@ -106,6 +114,12 @@ func UpdateNode(n *Node) (int64, error) {
 	}
 	if n.Status != 0 {
 		node["Status"] = n.Status
+	}
+	if len(n.DivId) >0 {
+		node["DivId"] = n.DivId
+	}
+	if len(n.Logo) >0 {
+		node["Logo"] = n.Logo
 	}
 	if len(node) == 0 {
 		return 0, errors.New("update field is empty")

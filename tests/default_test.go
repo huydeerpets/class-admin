@@ -6,7 +6,7 @@ import (
 	"testing"
 	"runtime"
 	"path/filepath"
-	_ "wechat-admin/routers"
+	_ "class-admin/routers"
 
 	"github.com/astaxie/beego"
 	. "github.com/smartystreets/goconvey/convey"

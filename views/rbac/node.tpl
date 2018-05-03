@@ -1,6 +1,16 @@
-{{template "../public/header.tpl"}}
+{{template "public/header.tpl" .}}
+<link rel = "stylesheet" type = "text/css" href ="/static/plugins/easyui/css/easyui.css" />
+<link rel = "stylesheet" type = "text/css" href ="/static/plugins/easyui/css/insdep_theme_default.css" />
+<link rel = "stylesheet" type ="text/css" href = "/static/plugins/easyui/css/icon.css" />
+<script type = "text/javascript" src = "/static/plugins/easyui/jquery.easyui.min.js"></script>
+<script type = "text/javascript" src = "/static/plugins/easyui/jquery.insdep-extend.min.js"></script>
+        <script src="/static/js/common.js"></script>
+<script src="/static/js/jquery-datagrid-clientpaging.js"></script>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+{{template "public/menu.tpl" .}}
 <script type="text/javascript">
-    var grouplist=$.parseJSON({{.grouplist | stringsToJson}});
+    var grouplist=$.parseJSON({{.grouplist}});
     var products = [
         {productid:'1',name:'禁用'},
         {productid:'2',name:'启用'}
@@ -10,13 +20,14 @@
         $("#treegrid").treegrid({
             url:URL+"/index",
             idField:"Id",
-            treeField:"Title",
             fitColumns:"true",
+            method:'POST',
+            treeField:"Title",
             columns:[[
                 {field:'Title',title:'显示名',width:150,editor:'text'},
                 {field:'Id',title:'ID',width:50},
                 {field:'Name',title:'应用名',width:100,editor:'text'},
-                {field:'Group__Id',title:'分组',width:80,
+                {field:'Group',title:'分组',width:80,
                     formatter:function(value){
                         for(var i=0; i<grouplist.length; i++){
                             if (grouplist[i].Id == value) return grouplist[i].Title;
@@ -49,12 +60,16 @@
                 }
                 vac.ajax(URL+'/AddAndEdit', c, 'POST', function(r){
                     if(!r.status){
-                        vac.alert(r.info);
+                        Messager.alert(r.info);
                     }else{
                         var group_id = $("#group").combobox("getValue");
-                        vac.ajax(URL+"/index",{group_id:group_id},"POST",function(data){
+                        $.ajax({
+                            url:URL+"/index",
+                            data: {group_id:group_id},
+                            type:"POST",
+                            success:function(data){
                                     $("#treegrid").treegrid("loadData",data)
-                                }
+                                }}
                         );
                     }
                 })
@@ -76,8 +91,16 @@
                     left: e.clientX,
                     top: e.clientY
                 });
+            },
+            loadFilter: function (data){
+                $.each(data.rows, function(i) {
+                    var parentId = data.rows[i].Pid;
+                    if(parentId != 0){
+                        data.rows[i]._parentId = parentId;
+                    }
+                });
+                return data;
             }
-
         });
     $("#group").combobox({
         "valueField":'Id',
@@ -92,6 +115,10 @@
         }
     });
 });
+    activeDiv=function () {
+        $('#access-li').addClass('active');
+        $('#node-li').addClass('active');
+    };
     //新增行
     function addrow(){
         var Row = $("#treegrid").treegrid("getSelected");
@@ -166,9 +193,9 @@
     }
 
 </script>
-<body>
+    <div class="content-wrapper">
 <table id="treegrid" title="节点管理" class="easyui-treegrid" toolbar="#tb"></table>
-<div id="tb" style="padding:5px;height:auto">
+<div id="tb" style="padding:5px;height:auto;display: none">
     <input id="group"/>
     <a href="#" icon='icon-add' plain="true" onclick="addrow()" class="easyui-linkbutton" >新增</a>
     <a href="#" icon='icon-edit' plain="true" onclick="editrow()" class="easyui-linkbutton" >编辑</a>
@@ -193,5 +220,6 @@
 <div id="mm1" class="easyui-menu" style="width:120px;display: none"  >
     <div icon='icon-add' onclick="addrow()">新增</div>
 </div>
-</body>
-</html>
+    </div>
+</div>
+{{template "public/footer.tpl" .}}

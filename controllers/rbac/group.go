@@ -1,7 +1,7 @@
 package rbac
 
 import (
-	m "github.com/beego/admin/src/models"
+	m "class-admin/models"
 )
 
 type GroupController struct {
@@ -26,7 +26,7 @@ func (this *GroupController) Index() {
 		this.ServeJSON()
 		return
 	} else {
-		this.TplName = this.GetTemplatetype() + "/rbac/group.tpl"
+		this.TplName = "rbac/group.tpl"
 	}
 
 }

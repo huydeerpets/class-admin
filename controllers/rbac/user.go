@@ -1,7 +1,7 @@
 package rbac
 
 import (
-	m "github.com/beego/admin/src/models"
+	m "class-admin/models"
 )
 
 type UserController struct {
@@ -29,10 +29,7 @@ func (this *UserController) Index() {
 		tree := this.GetTree()
 		this.Data["tree"] = &tree
 		this.Data["users"] = &users
-		if this.GetTemplatetype() != "easyui" {
-			this.Layout = this.GetTemplatetype() + "/public/layout.tpl"
-		}
-		this.TplName = this.GetTemplatetype() + "/rbac/user.tpl"
+		this.TplName = "rbac/user.tpl"
 	}
 
 }

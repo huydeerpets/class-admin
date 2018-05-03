@@ -41,6 +41,7 @@ func checkGroup(g *Group) (err error) {
 
 //get group list
 func GetGrouplist(page int64, page_size int64, sort string) (groups []orm.Params, count int64) {
+	groups=[]orm.Params{}
 	o := orm.NewOrm()
 	group := new(Group)
 	qs := o.QueryTable(group)

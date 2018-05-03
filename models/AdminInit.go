@@ -8,7 +8,7 @@ import (
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
-	. "github.com/beego/admin/src/lib"
+	. "class-admin/lib"
 	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/lib/pq"
 	_ "github.com/mattn/go-sqlite3"
@@ -69,6 +69,7 @@ func Connect() {
 		beego.Critical("Database driver is not allowed:", db_type)
 	}
 	orm.RegisterDataBase("default", db_type, dsn)
+	orm.Debug=true
 }
 
 //创建数据库

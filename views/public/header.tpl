@@ -11,14 +11,7 @@
       <link rel="stylesheet" href="/static/css/AdminLTE.min.css">
       <link rel="stylesheet" href="/static/css/skins/_all-skins.min.css">
 
-      {{range .moreStyles}}
-        <link rel="stylesheet" type="text/css" href="/public/{{.}}">
-      {{end}}
-
       <script src="/static/js/jquery.min.js"></script>
-      {{range .moreScripts}}
-          <script src="/static/{{.}}"></script>
-      {{end}}
 
   </head>
 

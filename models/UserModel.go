@@ -8,12 +8,13 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"github.com/astaxie/beego/validation"
-	. "github.com/beego/admin/src/lib"
+	. "class-admin/lib"
 )
 
 //用户表
 type User struct {
 	Id            int64
+	UserType      int
 	Username      string    `orm:"unique;size(32)" form:"Username"  valid:"Required;MaxSize(20);MinSize(6)"`
 	Password      string    `orm:"size(32)" form:"Password" valid:"Required;MaxSize(20);MinSize(6)"`
 	Repassword    string    `orm:"-" form:"Repassword" valid:"Required"`
@@ -128,11 +129,11 @@ func DelUserById(Id int64) (int64, error) {
 	return status, err
 }
 
-func GetUserByUsername(username string) (user User) {
+func GetUserByUsername(username string) (user User,err error) {
 	user = User{Username: username}
 	o := orm.NewOrm()
-	o.Read(&user, "Username")
-	return user
+	err=o.Read(&user, "Username")
+	return user,err
 }
 
 func GetUserById(id int64) (user User) {

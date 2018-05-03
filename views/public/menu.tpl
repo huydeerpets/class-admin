@@ -1,3 +1,31 @@
+
+<script type="text/javascript">
+    $( function() {
+        if({{.tree}}!=""){
+            localStorage.setItem('menu', JSON.stringify({{.tree}}));
+        }
+        var tree=JSON.parse(localStorage.getItem("menu"));
+        $('#menu').empty();
+        $.each(tree,function(i,item){
+            if(item.children.length==0){
+                $('#menu').append($('<li id="'+item.attributes.div_id+'"><a href="'+item.attributes.url+'"><i class="'+item.iconCls+'"></i>'+item.text+'</a></li>'));
+                return;
+            }
+            var $li=$('<li class="treeview" id="'+item.attributes.div_id+'">');
+            var $a=$('<a href="#">').append($('<i>').addClass(item.iconCls)).append($('<span>'+item.text+'</span>')).append(
+                $('<span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>')
+            );
+            var $ul=$('<ul class="treeview-menu">');
+            $.each(item.children,function(i,val){
+                $ul=$ul.append($('<li id="'+val.attributes.div_id+'"><a href="'+val.attributes.url+'"><i class="'+val.iconCls+'"></i>'+val.text+'</a></li>'))
+            });
+            $('#menu').append($li.append($a).append($ul));
+        });
+        activeDiv();
+    });
+    activeDiv=function () {
+    }
+</script>
 <header class="main-header">
     <div class="logo">
         <span class="logo-mini"><b>课堂互动</b></span>
@@ -12,12 +40,12 @@
             <ul class="nav navbar-nav">
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <span class="hidden-xs">{{.session.username}}</span>
+                        <span class="hidden-xs">{{.userinfo.Nickname}}</span>
                     </a>
                     <ul class="dropdown-menu">
                         <li class="user-footer">
                             <div class="pull-right">
-                                <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                <a href="/public/logout" class="btn btn-default btn-flat">Sign out</a>
                             </div>
                         </li>
                     </ul>
@@ -28,22 +56,7 @@
 </header>
 <aside class="main-sidebar">
     <section class="sidebar">
-        <ul class="sidebar-menu" data-widget="tree">
-            <li class="treeview" id="user-li">
-                <a href="#">
-                    <i class="fa fa-user"></i><span>信息管理</span>
-                    <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li id="owner-li"><a href="/user/user"><i class="fa fa-male"></i> 学生信息</a></li>
-                    <li id="card-li"><a href="/user/card"><i class="fa fa-paw"></i> 教师信息 </a></li>
-                    <li id="owner-li"><a href="/user/user"><i class="fa fa-male"></i> 课程信息</a></li>
-                </ul>
-            </li>
-
-            <li id="act-li"><a href="/act/act"><i class="fa fa-bullhorn"></i><span> 课程资料</span></a></li>
+        <ul class="sidebar-menu" data-widget="tree" id="menu">
         </ul>
     </section>
 </aside>

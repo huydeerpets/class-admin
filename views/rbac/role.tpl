@@ -1,4 +1,14 @@
-{{template "../public/header.tpl"}}
+{{template "public/header.tpl" .}}
+<link rel = "stylesheet" type = "text/css" href ="/static/plugins/easyui/css/easyui.css" />
+<link rel = "stylesheet" type = "text/css" href ="/static/plugins/easyui/css/insdep_theme_default.css" />
+<link rel = "stylesheet" type ="text/css" href = "/static/plugins/easyui/css/icon.css" />
+<script type = "text/javascript" src = "/static/plugins/easyui/jquery.easyui.min.js"></script>
+<script type = "text/javascript" src = "/static/plugins/easyui/jquery.insdep-extend.min.js"></script>
+<script type = "text/javascript" src = "/static/js/common.js"></script>
+<script src="/static/js/jquery-datagrid-clientpaging.js"></script>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+{{template "public/menu.tpl" .}}
 <script type="text/javascript">
 var statuslist = [
     {statusid:'1',name:'禁用'},
@@ -22,12 +32,6 @@ $(function(){
             {field:'Name',title:'组名',width:150,align:'center',editor:'text'},
             {field:'Remark',title:'描述',width:250,align:'center',editor:'text'},
             // {field:'create_time',title:'添加时间',width:150,align:'center',
-            //     formatter:function(value,row,index){
-            //         if(value) return phpjs.date("Y-m-d H:i:s",value);
-            //         return value;
-            //     }
-            // },
-            // {field:'update_time',title:'更新时间',width:150,align:'center',
             //     formatter:function(value,row,index){
             //         if(value) return phpjs.date("Y-m-d H:i:s",value);
             //         return value;
@@ -95,6 +99,10 @@ $(function(){
         }
     });
 })
+activeDiv=function () {
+    $('#access-li').addClass('active');
+    $('#role-li').addClass('active');
+};
 //新增行
 function addrow(){
     var getRows = $("#datagrid").datagrid("getRows");
@@ -156,9 +164,9 @@ function delrow(){
     });
 }
 </script>
-<body>
+<div class="content-wrapper">
 <table id="datagrid" toolbar="#tb"></table>
-<div id="tb" style="padding:5px;height:auto">
+<div id="tb" style="padding:5px;height:auto;display: none">
     <a href="#" icon='icon-add' plain="true" onclick="addrow()" class="easyui-linkbutton" >新增</a>
     <a href="#" icon='icon-edit' plain="true" onclick="editrow()" class="easyui-linkbutton" >编辑</a>
     <a href="#" icon='icon-save' plain="true" onclick="saverow()" class="easyui-linkbutton" >保存</a>
@@ -181,5 +189,6 @@ function delrow(){
 <div id="mm1" class="easyui-menu" style="width:120px;display: none"  >
     <div icon='icon-add' onclick="addrow()">新增</div>
 </div>
-</body>
-</html>
+</div>
+</div>
+{{template "public/footer.tpl" .}}

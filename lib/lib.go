@@ -4,6 +4,7 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"strconv"
+	"time"
 )
 
 //create md5 string
@@ -32,4 +33,27 @@ func StringsToJson(str string) string {
 	}
 
 	return jsons
+}
+
+
+// TimeParse ..
+func TimeParse(t string) time.Time {
+	tm, _ := time.ParseInLocation("2006-01-02 15:04:05", t, time.Local)
+	return tm
+}
+
+// TimeDate ..
+func TimeDate(t string) time.Time {
+	tm, _ := time.ParseInLocation("2006-01-02", t, time.Local)
+	return tm
+}
+
+// FormatTime ..
+func FormatTime(t time.Time) string {
+	return t.Format("2006-01-02 03:04:05")
+}
+
+// FormatDate ..
+func FormatDate(t time.Time) string {
+	return t.Format("2006-01-02")
 }

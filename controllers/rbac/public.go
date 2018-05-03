@@ -1,10 +1,8 @@
 package rbac
 
 import (
-	//"fmt"
 	"github.com/astaxie/beego"
-	. "github.com/beego/admin/src"
-	m "github.com/beego/admin/src/models"
+	m "class-admin/models"
 )
 
 type MainController struct {
@@ -23,6 +21,7 @@ type Tree struct {
 type Attributes struct {
 	Url   string `json:"url"`
 	Price int64  `json:"price"`
+	DivId string `json:"div_id"`
 }
 
 //首页
@@ -41,10 +40,7 @@ func (this *MainController) Index() {
 		this.Data["userinfo"] = userinfo
 		this.Data["groups"] = groups
 		this.Data["tree"] = &tree
-		if this.GetTemplatetype() != "easyui"{
-			this.Layout = this.GetTemplatetype() + "/public/layout.tpl"
-		}
-		this.TplName = this.GetTemplatetype() + "/public/index.tpl"
+		this.TplName = "public/index.tpl"
 	}
 }
 
@@ -65,13 +61,12 @@ func (this *MainController) Login() {
 			this.Rsp(false, err.Error())
 			return
 		}
-
 	}
 	userinfo := this.GetSession("userinfo")
 	if userinfo != nil {
 		this.Ctx.Redirect(302, "/public/index")
 	}
-	this.TplName = this.GetTemplatetype() + "/public/login.tpl"
+	this.TplName = "public/login.tpl"
 }
 
 //退出

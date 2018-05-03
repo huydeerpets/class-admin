@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/astaxie/beego/orm"
-	m "github.com/beego/admin/src/models"
+	m "class-admin/models"
 )
 
 type NodeController struct {
@@ -30,13 +30,6 @@ func (this *NodeController) Index() {
 			sort = "Id"
 		}
 		nodes, count := m.GetNodelist(page, page_size, sort)
-		for i := 0; i < len(nodes); i++ {
-			if nodes[i]["Pid"] != 0 {
-				nodes[i]["_parentId"] = nodes[i]["Pid"]
-			} else {
-				nodes[i]["state"] = "closed"
-			}
-		}
 		if len(nodes) < 1 {
 			nodes = []orm.Params{}
 		}
@@ -47,7 +40,7 @@ func (this *NodeController) Index() {
 		grouplist := m.GroupList()
 		b, _ := json.Marshal(grouplist)
 		this.Data["grouplist"] = string(b)
-		this.TplName = this.GetTemplatetype() + "/rbac/node.tpl"
+		this.TplName = "rbac/node.tpl"
 	}
 
 }
