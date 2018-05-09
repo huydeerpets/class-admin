@@ -1,8 +1,18 @@
 {{template "../public/header.tpl"}}
+<link rel = "stylesheet" type = "text/css" href ="/static/plugins/easyui/css/easyui.css" />
+<link rel = "stylesheet" type = "text/css" href ="/static/plugins/easyui/css/insdep_theme_default.css" />
+<link rel = "stylesheet" type ="text/css" href = "/static/plugins/easyui/css/icon.css" />
+<script type = "text/javascript" src = "/static/plugins/easyui/jquery.easyui.min.js"></script>
+<script type = "text/javascript" src = "/static/plugins/easyui/jquery.insdep-extend.min.js"></script>
+<script type = "text/javascript" src = "/static/js/common.js"></script>
+<script src="/static/js/jquery-datagrid-clientpaging.js"></script>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+{{template "public/menu.tpl" .}}
 <script type="text/javascript">
     var roleid = {{.roleid}};
     var grouplist=$.parseJSON({{.grouplist}});
-    var URL="/rbac/role"
+    var URL="/rbac/role";
 $(function(){
     //授权列表
     $("#combobox1").combobox({
@@ -21,7 +31,7 @@ $(function(){
     });
     //加载树
     $("#treegrid").treegrid({
-        'url':URL+'/AccessToNode?group_id=1&Id='+roleid,
+        'url':URL+'/AccessToNode?group_id=1&Id=1',
         'idField':'Id',
         'treeField':'Title',
         'fitColumns':true,
@@ -61,6 +71,15 @@ $(function(){
                     }
                 }
             }
+        },
+        loadFilter: function (data){
+            $.each(data.rows, function(i) {
+                var parentId = data.rows[i].Pid;
+                if(parentId != 0){
+                    data.rows[i]._parentId = parentId;
+                }
+            });
+            return data;
         }
     });
     $("#group").combobox({
@@ -80,7 +99,6 @@ $(function(){
 });
     //保存授权
     function saveaccess(){
-        //$.messager.progress();
         var tdata = $("#treegrid").treegrid('getSelections');
         var data=new Array(tdata.length);
         for(var i=0;i<tdata.length;i++){
@@ -90,23 +108,27 @@ $(function(){
         var group_id = $("#group").combobox("getValue");
         vac.ajax(URL+'/AddAccess', {roleid:roleid,group_id:group_id,ids:data.join(",")}, 'POST', function(r){
             $.messager.alert('提示',r.info,'info');
-            //$.messager.progress('close');
         })
     }
 	
-	function back() {
-		window.location = "/rbac/role/index";
-	}
+	// function back() {
+	// 	window.location = "/rbac/role/index";
+	// }
+    activeDiv=function () {
+        $('#access-li').addClass('active');
+        $('#atn-li').addClass('active');
+    };
 </script>
-<body>
-<table id="treegrid" toolbar="#tbr"></table>
-<div id="tbr" style="padding:5px;height:auto"> 
-    <div style="margin-bottom:5px">
-		<a href="#" icon='icon-back' plain="true" onclick="back()" class="easyui-linkbutton" >返回</a>
-        节点分组：<input id="group" name="name" >
-        角色：<input id="combobox1" name="name" >
-        <a href="#"  class="easyui-linkbutton" iconCls="icon-save" title="保存" plain="true" onclick="saveaccess()">保存</a>
+    <div class="content-wrapper">
+        <table id="treegrid" toolbar="#tbr"></table>
+        <div id="tbr" style="padding:5px;height:auto">
+            <div style="margin-bottom:5px">
+                {{/*<a href="#" icon='icon-back' plain="true" onclick="back()" class="easyui-linkbutton" >返回</a>*/}}
+                节点分组：<input id="group" name="name" >
+                角色：<input id="combobox1" name="name" >
+                <a href="#"  class="easyui-linkbutton" iconCls="icon-save" title="保存" plain="true" onclick="saveaccess()">保存</a>
+            </div>
+        </div>
     </div>
 </div>
-</body>
-</html>
+{{template "public/footer.tpl" .}}

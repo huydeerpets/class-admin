@@ -53,19 +53,23 @@ func (c *VideoController) SaveVideo() {
 		c.Rsp(false, err.Error())
 		return
 	}
-	_,vh,_:=c.GetFile("url")
-	_,ih,_:=c.GetFile("poster")
-	vSuffix:= path2.Ext(vh.Filename)
-	iSuffix:= path2.Ext(ih.Filename)
 	unix:=strconv.FormatInt(time.Now().Unix(), 10)
-	vfilename:="video_"+unix+vSuffix
-	ifilename:="image_"+unix+iSuffix
-    vpath:=path2.Join("file","video",vfilename)
-    ipath:=path2.Join("file","video",ifilename)
-	c.SaveToFile("url",vpath)
-	c.SaveToFile("poster",ipath)
-	u.Url="/"+vpath
-	u.Poster="/"+ipath
+	_,vh,_:=c.GetFile("url")
+	if vh!=nil{
+		vSuffix:= path2.Ext(vh.Filename)
+		vfilename:="video_"+unix+vSuffix
+		vpath:=path2.Join("file","video",vfilename)
+		c.SaveToFile("url",vpath)
+		u.Url="/"+vpath
+	}
+	_,ih,_:=c.GetFile("poster")
+	if ih!=nil{
+		iSuffix:= path2.Ext(ih.Filename)
+		ifilename:="image_"+unix+iSuffix
+		ipath:=path2.Join("file","video",ifilename)
+		c.SaveToFile("poster",ipath)
+		u.Poster="/"+ipath
+	}
 	id, err := u.Save()
 	if err == nil && id > 0 {
 		c.Rsp(true, "Success")
@@ -74,12 +78,11 @@ func (c *VideoController) SaveVideo() {
 		c.Rsp(false, err.Error())
 		return
 	}
-
 }
 
 func (c *VideoController) DelVideo() {
 	u := m.Video{}
-	Id, _ := c.GetInt64("Id")
+	Id, _ := c.GetInt64("id")
 	if Id == 0 {
 		c.Rsp(false, "缺少id")
 		return

@@ -26,8 +26,6 @@ func (this *UserController) Index() {
 		this.ServeJSON()
 		return
 	} else {
-		tree := this.GetTree()
-		this.Data["tree"] = &tree
 		this.Data["users"] = &users
 		this.TplName = "rbac/user.tpl"
 	}

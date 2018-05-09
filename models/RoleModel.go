@@ -182,3 +182,25 @@ func AccessList(uid int64) (list []orm.Params, err error) {
 	}
 	return list, nil
 }
+
+func NodeTreeByUser(uid int64) (list []orm.Params, err error) {
+	var roles []orm.Params
+	o := orm.NewOrm()
+	role := new(Role)
+	_, err = o.QueryTable(role).Filter("User__User__Id", uid).Values(&roles)
+	if err != nil {
+		return nil, err
+	}
+	var nodes []orm.Params
+	node := new(Node)
+	for _, r := range roles {
+		_, err := o.QueryTable(node).Filter("Role__Role__Id", r["Id"]).Filter("Pid",0).Values(&nodes)
+		if err != nil {
+			return nil, err
+		}
+		for _, n := range nodes {
+			list = append(list, n)
+		}
+	}
+	return list, nil
+}

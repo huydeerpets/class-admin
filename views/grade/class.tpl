@@ -39,8 +39,7 @@
 {{template "public/menu.tpl" .}}
     <script type="text/javascript">
         activeDiv=function () {
-            $('#info-li').addClass("active");
-            $('#class-li').addClass("active");
+            $('#grade-li').addClass("active");
         };
     </script>
     <div class="content-wrapper">

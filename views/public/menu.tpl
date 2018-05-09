@@ -4,6 +4,11 @@
         if({{.tree}}!=""){
             localStorage.setItem('menu', JSON.stringify({{.tree}}));
         }
+        if({{.userinfo.Nickname}}!=""){
+            localStorage.setItem('username', {{.userinfo.Nickname}});
+        }
+        var username=localStorage.getItem("username");
+        $('span.hidden-xs').html(username);
         var tree=JSON.parse(localStorage.getItem("menu"));
         $('#menu').empty();
         $.each(tree,function(i,item){
@@ -40,7 +45,7 @@
             <ul class="nav navbar-nav">
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <span class="hidden-xs">{{.userinfo.Nickname}}</span>
+                        <span class="hidden-xs"></span>
                     </a>
                     <ul class="dropdown-menu">
                         <li class="user-footer">

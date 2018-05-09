@@ -32,6 +32,14 @@ func init() {
 	beego.Router("/notice/save", &controllers.NoticeController{}, "*:Save")
 	beego.Router("/notice/del", &controllers.NoticeController{}, "*:Del")
 
+	beego.Router("/material/index", &controllers.MatController{}, "*:GetMaterialList")
+	beego.Router("/material/save", &controllers.MatController{}, "*:Save")
+	beego.Router("/material/del", &controllers.MatController{}, "*:Del")
+
+	beego.Router("/question/index", &controllers.QuesController{}, "*:GetQuestionList")
+	beego.Router("/question/save", &controllers.QuesController{}, "*:Save")
+	beego.Router("/question/ansIndex", &controllers.QuesController{},"*:AnsIndex")
+
 	beego.Router("/grade/index", &controllers.GradeController{}, "*:GetClassList")
 
 	beego.SetStaticPath("/file", "file")

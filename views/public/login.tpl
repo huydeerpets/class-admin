@@ -4,6 +4,18 @@
 <script src="/static/js/messager.js"></script>
 <script type="text/javascript">
     function fromsubmit() {
+        if($('select[name="userType"] option:selected').val()=="0"){
+            Messager.alert("请选择用户类型")
+            return
+        }
+        if($('input[name="username"]').val()==""){
+            Messager.alert("请输入用户名")
+            return
+        }
+        if($('input[name="password"]').val()==""){
+            Messager.alert("请输入密码")
+            return
+        }
         $("#loginForm").ajaxSubmit({
             url: '/public/login?isajax=1',
             type: 'post',
@@ -34,8 +46,8 @@
             <p class="login-box-msg">Sign in to start your session</p>
             <form id="loginForm" >
                 <div class="form-group has-feedback">
-                    <select type="text" class="form-control" name="userType">
-                        <option value="0">用户类型</option>
+                    <select class="form-control" name="userType">
+                        <option value="0">——用户类型——</option>
                         <option value="1">管理员</option>
                         <option value="2">教师</option>
                     </select>

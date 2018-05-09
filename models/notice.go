@@ -3,14 +3,16 @@ package models
 import (
 	"github.com/astaxie/beego/orm"
 	"fmt"
+	"time"
 )
 
 type Notice struct {
 	Id         int64   `form:"id"         json:"id"`
-	Title      string  `form:"teacherNo"  json:"teacher_no"`
-	LectureId  string  `form:"lessonNo"   json:"lesson_no"`
-	Content    string  `form:"place"      json:"place"`
-	CreatedAt  string  `json:"created_at" orm:"auto_now_add"`
+	Title      string  `form:"title"      json:"title"`
+	LectureId  string  `form:"lectureId"  json:"lecture_id"`
+	Content    string  `form:"content"    json:"content"`
+	CreatedAt  time.Time  `json:"created_at" orm:"auto_now_add"`
+	UpdatedAt  time.Time  `json:"updated_at" orm:"type(datetime);auto_now"`
 }
 
 const NoticeTable = "notice"
@@ -24,14 +26,17 @@ func init()  {
 }
 
 
-func GetNoticeList(pager Pager,lessonNo string) ([]orm.Params) {
+func GetNoticeList(pager Pager,lessonNo,lessonName string) ([]orm.Params) {
 	var maps []orm.Params
 	o := orm.NewOrm()
-	sql:="select n.*,les.name as les_name,lec.class_time as class_time from "+NoticeTable+" as n "
+	sql:="select n.*,lec.lesson_no as les_no,les.name as les_name,lec.class_time as class_time from "+NoticeTable+" as n "
 	sql+=" left join "+LectureTable+" as lec on n.lecture_id=lec.id "+
 		" left join "+LessonTable+" as les on les.number=lec.lesson_no where 1=1 "
 	if lessonNo!=""{
 		sql+=" and lec.lesson_no = '"+lessonNo+"'"
+	}
+	if lessonName!=""{
+		sql+=" and les.name like '%"+lessonName+"%' "
 	}
 	var sort string
 	if len(pager.SortField) > 0 {

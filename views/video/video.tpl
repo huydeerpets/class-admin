@@ -1,19 +1,35 @@
 {{template "public/header.tpl" .}}
 <style>
     .video-view { float: left; margin: 10px 10px 0 5px; width:240px;height:340px;text-align:center;z-index:1; position:relative;}
-    .video-check { margin:15px 0 0 205px;z-index:2;position:absolute;float:right;}
-    .video-check input{ width:30px;}
     .video-view:hover { background: #efefef;}
-    .video-view img { border: 1px solid #ddd; max-width:220px;height:220px}
-    .video-info { margin: 12px 10px 0 10px; position:absolute;bottom:0;}
-    .video-info p { line-height: 15px; float: left;word-break:break-all;}
-
+    .video-img {border: 1px solid #ddd;width:220px;height: 220px;}
+    .video-img img { max-width:220px;height:220px}
+    .video-info { width:220px;height:80px;margin-top: 30px;}
+    .video-info p { line-height: 15px;text-align:left;word-wrap:break-word;word-break:break-all;}
+    input.error, select.error {
+        border: 1px solid #ff9999;
+        background: #ffeeee;
+    }
+    label.error {
+        font-size: .8em;color: #ff6666;display:inline;
+    }
+    .note {
+        font-size: .8em;color: #a5a5a5;display:inline;float:left;
+    }
+    .operate span{
+        margin-left:10px;
+    }
+    .operate span:hover{
+        color: #ff7167;
+    }
+    .operate{
+        float:right;margin-top: 4px;margin-right: 4px;
+    }
 </style>
 <link rel="stylesheet" href="/static/css/jsgrid.min.css">
 <link rel="stylesheet" href="/static/css/jsgrid-theme.min.css">
 <link rel="stylesheet" href="/static/css/daterangepicker.css">
 <link rel="stylesheet" href="/static/css/video-js.css">
-<link rel="stylesheet" href="/static/plugins/icheck/skins/all.css">
 <script src="/static/js/jsgrid.min.js"></script>
 <script src="/static/js/jquery.validate.min.js"></script>
 <script src="/static/js/jquery.form.min.js"></script>
@@ -21,12 +37,17 @@
 <script src="/static/js/daterangepicker.js"></script>
 <script src="/static/js/messager.js"></script>
 <script src="/static/js/video.js"></script>
-<script src="/static/plugins/icheck/icheck.min.js"></script>
 <script src="/static/admin/common.js"></script>
 <script src="/static/admin/video.js"></script>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 {{template "public/menu.tpl" .}}
+    <script type="text/javascript">
+        activeDiv=function () {
+            $('#video-li').addClass("active");
+        };
+        console.log({{.session}})
+    </script>
     <div class="content-wrapper">
         <section class="content-header">
             <h1>视频信息</h1>
@@ -57,8 +78,6 @@
                                     <option>50</option>
                                     <option>100</option>
                                 </select>
-                                <button id="editBtn" class="btn btn-info btn-sm">编辑</button>
-                                <button id="delBtn" class="btn btn-warning btn-sm">删除</button>
                                 <div style="float:right;display:inline">
                                     <input type="text" class="form-control input-sm" name="nameS" placeholder="名称">
                                     <button id="videoSearch" class="btn btn-primary btn-sm">搜索</button>
@@ -117,12 +136,14 @@
                                     <div class="col-sm-6">
                                         <input type="file" id="url" name="url" class="form-control">
                                     </div>
+                                    <label class="note">*无需修改时不用重新上传</label>
                                 </div>
                                 <div class="form-group">
                                     <label for="poster" class="col-sm-3 control-label">封面</label>
                                     <div class="col-sm-6">
                                         <input type="file" id="poster" name="poster" class="form-control">
                                     </div>
+                                    <label class="note">*默认为视频第一帧，<br>可上传自定义封面</label>
                                 </div>
                                 <div class="form-group">
                                     <label for="brief" class="col-sm-3 control-label">描述</label>

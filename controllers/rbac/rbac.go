@@ -69,7 +69,13 @@ func CheckAccess(params []string) bool {
 //To test whether permissions
 func AccessDecision(params []string, accesslist map[string]bool) bool {
 	if CheckAccess(params) {
-		s := fmt.Sprintf("%s/%s/%s", params[1], params[2], params[3])
+		var s string
+		if len(params)==3{
+				s = fmt.Sprintf("%s", params[1])
+		}else{
+			s = fmt.Sprintf("%s/%s", params[1], params[2])
+		}
+
 		if len(accesslist) < 1 {
 			return false
 		}
@@ -133,14 +139,24 @@ func GetAccessList(uid int64) (map[string]bool, error) {
 	}
 	accesslist := make(map[string]bool)
 	for _, v := range alist {
+		if len(v.Childrens)==0{
+			vname := strings.Split(v.Name, "/")
+			str := fmt.Sprintf("%s", strings.ToLower(vname[0]))
+			accesslist[str] = true
+		}
 		for _, v1 := range v.Childrens {
-			for _, v2 := range v1.Childrens {
-				vname := strings.Split(v.Name, "/")
-				v1name := strings.Split(v1.Name, "/")
-				v2name := strings.Split(v2.Name, "/")
-				str := fmt.Sprintf("%s/%s/%s", strings.ToLower(vname[0]), strings.ToLower(v1name[0]), strings.ToLower(v2name[0]))
-				accesslist[str] = true
-			}
+			vname := strings.Split(v.Name, "/")
+			v1name := strings.Split(v1.Name, "/")
+			str := fmt.Sprintf("%s/%s", strings.ToLower(vname[0]), strings.ToLower(v1name[0]))
+			accesslist[str] = true
+
+			//for _, v2 := range v1.Childrens {
+			//	vname := strings.Split(v.Name, "/")
+			//	v1name := strings.Split(v1.Name, "/")
+			//	v2name := strings.Split(v2.Name, "/")
+			//	str := fmt.Sprintf("%s/%s/%s", strings.ToLower(vname[0]), strings.ToLower(v1name[0]), strings.ToLower(v2name[0]))
+			//	accesslist[str] = true
+			//}
 		}
 	}
 	return accesslist, nil

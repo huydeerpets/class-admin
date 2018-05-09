@@ -31,26 +31,29 @@ function initShow(){
         },
         rowRenderer: function(item) {
             var $videobox = $("<div>").addClass("video-view box box-primary");
-            var $video = $("<div>").addClass("box-body").append($('<img>').attr("src",item.poster).attr("alt","无图片").on("click",function(){
-                 var videoObj = videojs("video");
-                 videoObj.src(item.url);
-                 $('#videoModal').modal();
-            }));
-            var $check=$("<input type='checkbox' name='videoIds' value='"+item.id+"'>");
-            var $checkbox = $("<div>").addClass("video-check").append($check);
+            var $video = $("<div>").addClass("box-body");
+            var $img=$("<div>").addClass("video-img").on("click",function(){
+                var videoObj = videojs("video");
+                videoObj.src(item.url);
+                $('#videoModal').modal();
+            }).append($('<img>').attr("src",item.poster).attr("alt","无图片"));
             var $info = $("<div>").addClass("video-info")
                 .append($("<p>").html("<strong>名称：</strong>"+item.name))
-            return $videobox.append($checkbox).append($video.append($info));
-        },
-        onDataLoaded:function(){
-            $(".video-check input").iCheck({
-                checkboxClass: 'iradio_square-blue'
-            }).on("ifClicked",function(){
-                $(this).parent().parent().parent().css("background-color","#DBDBDB")
-            }).on("ifUnchecked",function(){
-                $(this).parent().parent().parent().css("background-color","white")
-            })
+                .append($("<p>").html("<strong>时间：</strong>"+item.updated_at.substr(0,10)));
+
+            var $edit=$('<span>').addClass("glyphicon glyphicon-edit").tooltip({title:'编辑'}).on('click',function(){
+                fillForm(item);
+                $('#modalLabel').text('编辑视频信息');
+                $('#editModal').modal();
+            });
+            var $delete=$('<span>').addClass("glyphicon glyphicon-trash").tooltip({title:'删除'}).on('click',function(){
+                deleteVideo(item.id)
+            });
+            var $button=$('<div>').addClass("operate").append($edit).append($delete);
+
+            return $videobox.append($video.append($img).append($button).append($info));
         }
+
     });
 
 }
@@ -68,7 +71,6 @@ function initBtnEvent(){
         $('#videoForm').validate().resetForm();
         $('#editModal').modal("hide");
     });
-
 }
 //初始化搜索输入框（日期选择、单选按钮）
 function initInput(){
@@ -113,4 +115,30 @@ function initInput(){
             })
         }
     });
+}
+
+function fillForm(item) {
+    $('#id').val(item.id);
+    $('#name').val(item.name);
+    $('#type').val(item.type);
+    $('#brief').val(item.brief);
+}
+
+function deleteVideo(id) {
+    Messager.confirm({message:"确定删除吗"}).on(function(e) {
+        if (!e) return;
+        $.ajax({
+            url: '/video/delVideo?id=' + id,
+            success: function (data) {
+                if (data.status) {
+                    $('#videoShow').jsGrid('loadData');
+                } else {
+                    Messager.alert(data.info);
+                }
+            },
+            error:function () {
+                Messager.alert("请求失败");
+            }
+        })
+    })
 }

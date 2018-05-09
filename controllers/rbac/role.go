@@ -92,11 +92,6 @@ func (this *RoleController) AccessToNode() {
 		nodes, count := m.GetNodelistByGroupid(groupid)
 		list, _ := m.GetNodelistByRoleId(roleid)
 		for i := 0; i < len(nodes); i++ {
-			if nodes[i]["Pid"] != 0 {
-				nodes[i]["_parentId"] = nodes[i]["Pid"]
-			} else {
-				nodes[i]["state"] = "closed"
-			}
 			for x := 0; x < len(list); x++ {
 				if nodes[i]["Id"] == list[x]["Id"] {
 					nodes[i]["checked"] = 1

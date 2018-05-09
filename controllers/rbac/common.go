@@ -3,6 +3,7 @@ package rbac
 import (
 	"github.com/astaxie/beego"
 	m "class-admin/models"
+	"github.com/astaxie/beego/orm"
 )
 
 type CommonController struct {
@@ -19,8 +20,14 @@ func (this *CommonController) GetTemplatetype() string {
 	return ""
 }
 
-func (this *CommonController) GetTree() []Tree {
-	nodes, _ := m.GetNodeTree(0, 1)
+func (this *CommonController) GetTree(user m.User) []Tree {
+	var nodes []orm.Params
+	if user.Username=="admin"{
+		nodes, _ = m.GetNodeTree(0, 1)
+	}else {
+		nodes, _ = m.NodeTreeByUser(user.Id)
+	}
+
 	tree := make([]Tree, len(nodes))
 	for k, v := range nodes {
 		tree[k].Id = v["Id"].(int64)

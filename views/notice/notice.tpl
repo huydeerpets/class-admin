@@ -65,6 +65,7 @@
                                 </select>
                                 <div style="float:right;display:inline">
                                     <input type="text" class="form-control input-sm" name="lessonNoS" placeholder="课程代码">
+                                    <input type="text" class="form-control input-sm" name="lessonNameS" placeholder="课程名称">
                                     {{/*<select name="termS" class="form-control input-sm">*/}}
                                         {{/*<option value="">学期</option>*/}}
                                         {{/*<option>2017-2018(2)</option>*/}}

@@ -15,7 +15,8 @@ type Video struct {
 	Poster     string     `json:"poster"`
 	Brief      string     `json:"brief"        form:"brief"`
 	ViewNum    int        `json:"view_num"`
-	CreatedAt  time.Time  `json:"created_at" orm:"auto_now_add"`
+	CreatedAt  time.Time  `json:"created_at" orm:"type(datetime);auto_now_add"`
+	UpdatedAt  time.Time  `json:"updated_at" orm:"type(datetime);auto_now"`
 	Uploader   string     `json:"uploader"`
 }
 
@@ -67,12 +68,25 @@ func GetVideoList(pager Pager,start,end,name string) ([]orm.Params) {
 func (t *Video) Save() (id int64, err error) {
 	o := orm.NewOrm()
 	if t.Id > 0{
-		_ , err = o.Update(t)
-		if err == nil{
-			id=t.Id
+		temp:=Video{Id:t.Id}
+		if o.Read(&temp) == nil {
+			temp.Name=t.Name
+			temp.Brief=t.Brief
+			temp.Type=t.Type
+			temp.LessonNo=t.LessonNo
+			if t.Url!=""{
+				temp.Url=t.Url
+			}
+			if t.Poster!=""{
+				temp.Poster=t.Poster
+			}
+			_ , err = o.Update(&temp)
+			if err == nil{
+				id=t.Id
+			}
 		}
+
 	}else{
-		t.CreatedAt=time.Now()
 		id, err = o.Insert(t)
 	}
 	return
@@ -80,7 +94,7 @@ func (t *Video) Save() (id int64, err error) {
 
 func (t *Video) Delete() (int64, error) {
 	o := orm.NewOrm()
-	status, err := o.Delete(&Lecture{Id: t.Id})
+	status, err := o.Delete(&Video{Id: t.Id})
 	return status, err
 }
 

@@ -53,14 +53,14 @@ $(function(){
                         required:true
                     }
                 }
-            },
-            {field:'action',title:'操作',width:200,align:'center',
-                formatter:function(value,row,index){
-                    var c = '<a href="'+URL+'/AccessToNode?Id='+row.Id+'" target="_self">授权</a> ';
-                    var d = '<a href="'+URL+'/RoleToUserList?Id='+row.Id+'" target="_self">用户列表</a> ';
-                    return c+d;
-                }
             }
+            // {field:'action',title:'操作',width:200,align:'center',
+            //     formatter:function(value,row,index){
+            //         var c = '<a href="'+URL+'/AccessToNode?Id='+row.Id+'" target="_self">授权</a> ';
+            //         var d = '<a href="'+URL+'/RoleToUserList?Id='+row.Id+'" target="_self">用户列表</a> ';
+            //         return c+d;
+            //     }
+            // }
         ]],
         onAfterEdit:function(index, data, changes){
             if(vac.isEmpty(changes)){

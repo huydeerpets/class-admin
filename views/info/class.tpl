@@ -106,7 +106,7 @@
                         <h4 class="modal-title" id="modalLabel"></h4>
                     </div>
                     <form class="form-horizontal" id="classForm">
-                    <div class="modal-body" style="text-align:center;">
+                        <div class="modal-body" style="text-align:center;">
                             <input type="hidden" name="id" id="id">
                             <div class="box-body">
                                 <div class="form-group">
@@ -121,13 +121,12 @@
                                         <input id="stuNo" name="stuNo" class="form-control">
                                     </div>
                                 </div>
-
                             </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary" id="submitBtn">确定</button>
-                        <button type="button" class="btn btn-default closeBtn">取消</button>
-                    </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary" id="submitBtn">确定</button>
+                            <button type="button" class="btn btn-default closeBtn">取消</button>
+                        </div>
                     </form>
                     <div class="overlay" style="display: none;">
                         <i class="fa fa-refresh fa-spin"></i>

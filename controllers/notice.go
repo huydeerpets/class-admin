@@ -20,14 +20,15 @@ func (c *NoticeController) GetNoticeList()  {
 	sortOrder := c.GetString("sortOrder")
 	pager:=m.Pager{pageIndex,pageSize,sortField,sortOrder}
 	lessonNo:=c.GetString("lessonNo")
-	list:=m.GetNoticeList(pager,lessonNo)
+	lessonName:=c.GetString("lessonName")
+	list:=m.GetNoticeList(pager,lessonNo,lessonName)
 	c.Data["json"] = &map[string]interface{}{"itemsCount": len(list), "data": &list}
 	c.ServeJSON()
 	return
 }
 
 func (c *NoticeController) Save() {
-	u := m.Video{}
+	u := m.Notice{}
 	if err := c.ParseForm(&u); err != nil {
 		c.Rsp(false, err.Error())
 		return
@@ -44,7 +45,7 @@ func (c *NoticeController) Save() {
 }
 
 func (c *NoticeController) Del() {
-	u := m.Video{}
+	u := m.Notice{}
 	Id, _ := c.GetInt64("Id")
 	if Id == 0 {
 		c.Rsp(false, "缺少id")
