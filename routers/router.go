@@ -32,6 +32,10 @@ func init() {
 	beego.Router("/notice/save", &controllers.NoticeController{}, "*:Save")
 	beego.Router("/notice/del", &controllers.NoticeController{}, "*:Del")
 
+	beego.Router("/work/index", &controllers.WorkController{}, "*:GetWorkList")
+	beego.Router("/work/save", &controllers.WorkController{}, "*:Save")
+	beego.Router("/work/del", &controllers.WorkController{}, "*:Del")
+
 	beego.Router("/material/index", &controllers.MatController{}, "*:GetMaterialList")
 	beego.Router("/material/save", &controllers.MatController{}, "*:Save")
 	beego.Router("/material/del", &controllers.MatController{}, "*:Del")

@@ -5,8 +5,9 @@ import (
 	m "class-admin/models"
 	"time"
 	"class-admin/lib"
-	path2 "path"
+	"path"
 	"strconv"
+	"class-admin/utils"
 )
 
 type VideoController struct {
@@ -54,22 +55,32 @@ func (c *VideoController) SaveVideo() {
 		return
 	}
 	unix:=strconv.FormatInt(time.Now().Unix(), 10)
-	_,vh,_:=c.GetFile("url")
-	if vh!=nil{
-		vSuffix:= path2.Ext(vh.Filename)
-		vfilename:="video_"+unix+vSuffix
-		vpath:=path2.Join("file","video",vfilename)
-		c.SaveToFile("url",vpath)
-		u.Url="/"+vpath
-	}
 	_,ih,_:=c.GetFile("poster")
 	if ih!=nil{
-		iSuffix:= path2.Ext(ih.Filename)
-		ifilename:="image_"+unix+iSuffix
-		ipath:=path2.Join("file","video",ifilename)
+		iSuffix:= path.Ext(ih.Filename)
+		ifilename:="poster_"+unix+iSuffix
+		ipath:=path.Join("file","video",ifilename)
 		c.SaveToFile("poster",ipath)
 		u.Poster="/"+ipath
 	}
+	_,vh,_:=c.GetFile("url")
+	if vh!=nil{
+		vSuffix:= path.Ext(vh.Filename)
+		vfilename:="video_"+unix+vSuffix
+		vpath:=path.Join("file","video",vfilename)
+		c.SaveToFile("url",vpath)
+		u.Url="/"+vpath
+		if ih==nil{
+			pfile:="poster_"+unix+".jpg"
+			pPath:=path.Join("file","video",pfile)
+			poster:="/"+pPath
+			err:=utils.GetFrame("."+u.Url,"."+poster)
+			if err==nil{
+				u.Poster=poster
+			}
+		}
+	}
+
 	id, err := u.Save()
 	if err == nil && id > 0 {
 		c.Rsp(true, "Success")

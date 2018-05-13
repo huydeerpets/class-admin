@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-type Notice struct {
+type Work struct {
 	Id         int64   `form:"id"         json:"id"`
 	Title      string  `form:"title"      json:"title"`
 	LectureId  string  `form:"lectureId"  json:"lecture_id"`
@@ -15,20 +15,20 @@ type Notice struct {
 	UpdatedAt  time.Time  `json:"updated_at" orm:"type(datetime);auto_now"`
 }
 
-const NoticeTable = "notice"
+const WorkTable = "homework"
 
-func (Notice) TableName() string {
-	return NoticeTable
+func (Work) TableName() string {
+	return WorkTable
 }
 
 func init() {
-	orm.RegisterModel(new(Notice))
+	orm.RegisterModel(new(Work))
 }
 
-func GetNoticeList(pager Pager,lessonNo,lessonName string) ([]orm.Params) {
+func GetWorkList(pager Pager,lessonNo,lessonName string) ([]orm.Params) {
 	var maps []orm.Params
 	o := orm.NewOrm()
-	sql:="select n.*,lec.lesson_no as les_no,les.name as les_name,lec.class_time as class_time from "+NoticeTable+" as n "
+	sql:="select n.*,lec.lesson_no as les_no,les.name as les_name,lec.class_time as class_time from "+WorkTable+" as n "
 	sql+=" left join "+LectureTable+" as lec on n.lecture_id=lec.id "+
 		" left join "+LessonTable+" as les on les.number=lec.lesson_no where 1=1 "
 	if lessonNo!=""{
@@ -60,7 +60,7 @@ func GetNoticeList(pager Pager,lessonNo,lessonName string) ([]orm.Params) {
 	return maps
 }
 
-func (t *Notice) Save() (id int64, err error) {
+func (t *Work) Save() (id int64, err error) {
 	o := orm.NewOrm()
 	if t.Id > 0{
 		_ , err = o.Update(t)
@@ -73,9 +73,9 @@ func (t *Notice) Save() (id int64, err error) {
 	return
 }
 
-func (t *Notice) Delete() (int64, error) {
+func (t *Work) Delete() (int64, error) {
 	o := orm.NewOrm()
-	status, err := o.Delete(&Notice{Id: t.Id})
+	status, err := o.Delete(&Work{Id: t.Id})
 	return status, err
 }
 

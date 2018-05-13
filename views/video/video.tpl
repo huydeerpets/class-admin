@@ -94,7 +94,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-body" style="text-align:center;height:520px;">
-                    <video class="video-js" id="video" preload="auto" height="490px" controls preload="auto" data-setup='{}'>
+                    <video class="video-js" id="video" preload="auto" height="490px" controls data-setup='{}'>
                         <p class="vjs-no-js">
                             视频播放出错
                         </p>

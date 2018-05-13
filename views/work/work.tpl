@@ -32,18 +32,18 @@
 <script src="/static/js/jquery.form.min.js"></script>
 <script src="/static/js/messager.js"></script>
 <script src="/static/admin/common.js"></script>
-<script src="/static/admin/notice.js"></script>
+<script src="/static/admin/work.js"></script>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 {{template "public/menu.tpl" .}}
     <script type="text/javascript">
         activeDiv=function () {
-            $('#notice-li').addClass("active");
+            $('#work-li').addClass("active");
         };
     </script>
     <div class="content-wrapper">
         <section class="content-header">
-            <h1>通知</h1>
+            <h1>作业管理</h1>
         </section>
         <section class="content">
             <div class="row">
@@ -52,7 +52,7 @@
                         <div class="box-body">
                             <div class="form-inline" style="height:28px">
                                 <div style="float:left">
-                                    <button id="addBtn" class="btn btn-primary btn"><span class="glyphicon glyphicon-plus"></span>&nbsp新建通知</button>
+                                    <button id="addBtn" class="btn btn-primary btn"><span class="glyphicon glyphicon-plus"></span>&nbsp布置作业</button>
                                 </div>
                             </div>
                             <div class="form-inline" style="margin:12px 0">
@@ -79,7 +79,7 @@
                                     <button id="searchBtn" class="btn btn-primary btn-sm">搜索</button>
                                 </div>
                             </div>
-                            <div id="noticeTable" style="margin:10px 0"></div>
+                            <div id="workTable" style="margin:10px 0"></div>
                         </div>
                         <div class="overlay" style="display: none;">
                             <i class="fa fa-refresh fa-spin"></i>
@@ -89,7 +89,7 @@
             </div>
         </section>
     </div>
-    <div id="noticeModal" class="modal fade" data-backdrop="static">
+    <div id="workModal" class="modal fade" data-backdrop="static">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="box">
@@ -97,7 +97,7 @@
                         <button type="button" class="close closeBtn" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
                         <h4 class="modal-title" id="modalLabel"></h4>
                     </div>
-                    <form class="form-horizontal" id="noticeForm">
+                    <form class="form-horizontal" id="workForm">
                     <div class="modal-body" style="text-align:center;">
                             <input type="hidden" name="id" id="id">
                             <div class="box-body">
