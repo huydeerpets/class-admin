@@ -25,7 +25,7 @@ function initTable(){
             {name:'operate',title:'操作',width:80,sorting:false,itemTemplate:function(value,item){
                 var $edit=$('<span>').addClass("glyphicon glyphicon-edit").tooltip({title:'编辑'}).on('click',function(){
                     fillForm(item);
-                    $('#modalLabel').text('修改通知');
+                    $('#modalLabel').text('修改作业');
                     $('#workModal').modal();
                 });
                 var $delete=$('<span>').addClass("glyphicon glyphicon-trash").tooltip({title:'删除'}).on('click',function(){
@@ -67,7 +67,7 @@ function initTable(){
 
 function initBtnEvent(){
     $('#addBtn').on('click',function(){
-        $('#modalLabel').text('发布通知');
+        $('#modalLabel').text('布置作业');
         $('#workModal').modal();
     });
     $('.closeBtn').on('click',function(){

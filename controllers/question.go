@@ -25,7 +25,11 @@ func (c *QuesController) GetQuestionList()  {
 	lessonNo:=c.GetString("lessonNo")
 	lessonName:=c.GetString("lessonName")
 	stuName:=c.GetString("stuName")
-	list:=m.GetQuestionList(pager,start,end,lessonNo,lessonName,stuName)
+
+	userinfo := c.GetSession("userinfo")
+	user:=userinfo.(m.User)
+
+	list:=m.GetQuestionList(pager,start,end,lessonNo,lessonName,stuName,user.Username)
 	c.Data["json"] = &map[string]interface{}{"itemsCount": len(list), "data": &list}
 	c.ServeJSON()
 	return

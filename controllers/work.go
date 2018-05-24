@@ -21,7 +21,11 @@ func (c *WorkController) GetWorkList()  {
 	pager:=m.Pager{pageIndex,pageSize,sortField,sortOrder}
 	lessonNo:=c.GetString("lessonNo")
 	lessonName:=c.GetString("lessonName")
-	list:=m.GetWorkList(pager,lessonNo,lessonName)
+
+	userinfo := c.GetSession("userinfo")
+	user:=userinfo.(m.User)
+
+	list:=m.GetWorkList(pager,lessonNo,lessonName,user.Username)
 	c.Data["json"] = &map[string]interface{}{"itemsCount": len(list), "data": &list}
 	c.ServeJSON()
 	return

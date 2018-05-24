@@ -49,6 +49,7 @@ function initTable(){
         controller: {
             loadData: function (filter) {
                 var stuNo=$('input[name="stuNoS"]').val();
+                
                 if(stuNo!=""){filter.stuNo=stuNo;}
                 return $.ajax({
                     type: "GET",

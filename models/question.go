@@ -13,7 +13,7 @@ type Question struct {
 	Title      string     `json:"title"`
 	Question   string     `json:"question"`
 	Number     int        `json:"number"` //第几节课
-	StuId      int        `json:"stu_id"`
+	StuNo      int        `json:"stu_no"`
 	Answer     string     `json:"answer"       form:"answer"`
 	CreatedAt  time.Time  `json:"created_at"   orm:"type(datetime);auto_now_add"`
 	UpdatedAt  time.Time  `json:"updated_at"   orm:"type(datetime);auto_now"`
@@ -30,14 +30,14 @@ func init() {
 	orm.RegisterModel(new(Question))
 }
 
-func GetQuestionList(pager Pager,start,end,lessonNo,lessonName,stuName string) ([]orm.Params) {
+func GetQuestionList(pager Pager,start,end,lessonNo,lessonName,stuName,teaNo string) ([]orm.Params) {
 	var maps []orm.Params
 	o := orm.NewOrm()
 	sql:="select n.id,n.title,n.question,n.number,n.updated_at"+
 		",stu.name as stu_name,lec.lesson_no as les_no,les.name as les_name,lec.class_time as class_time from "+QuestionTable+" as n "
 	sql+=" left join "+LectureTable+" as lec on n.lecture_id=lec.id "+
 		" left join "+LessonTable+" as les on les.number=lec.lesson_no "+
-			"left join "+StudentTable+" as stu on n.stu_id=stu.stu_id where 1=1 "
+			"left join "+StudentTable+" as stu on n.stu_no=stu.stu_id where lec.teacher_no='"+teaNo+"' "
 	if lessonNo!=""{
 		sql+=" and lec.lesson_no = '"+lessonNo+"'"
 	}
@@ -106,7 +106,7 @@ func GetQuestionById(id int) orm.Params {
 	sql:="select n.*,stu.name as stu_name,lec.lesson_no as les_no,les.name as les_name,lec.class_time as class_time from "+QuestionTable+" as n "
 	sql+=" left join "+LectureTable+" as lec on n.lecture_id=lec.id "+
 		" left join "+LessonTable+" as les on les.number=lec.lesson_no "+
-		"left join "+StudentTable+" as stu on n.stu_id=stu.stu_id where n.id="+strconv.Itoa(id)+" limit 1 "
+		"left join "+StudentTable+" as stu on n.stu_no=stu.stu_id where n.id="+strconv.Itoa(id)+" limit 1 "
 	_,err:=o.Raw(sql).Values(&maps)
 	if err!=nil || len(maps)==0 {
 		fmt.Println(err)

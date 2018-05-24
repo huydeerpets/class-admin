@@ -4,10 +4,10 @@
 <script src="/static/js/messager.js"></script>
 <script type="text/javascript">
     function fromsubmit() {
-        if($('select[name="userType"] option:selected').val()=="0"){
-            Messager.alert("请选择用户类型")
-            return
-        }
+        // if($('select[name="userType"] option:selected').val()=="0"){
+        //     Messager.alert("请选择用户类型")
+        //     return
+        // }
         if($('input[name="username"]').val()==""){
             Messager.alert("请输入用户名")
             return
@@ -45,13 +45,13 @@
         <div class="login-box-body">
             <p class="login-box-msg">Sign in to start your session</p>
             <form id="loginForm" >
-                <div class="form-group has-feedback">
-                    <select class="form-control" name="userType">
-                        <option value="0">——用户类型——</option>
-                        <option value="1">管理员</option>
-                        <option value="2">教师</option>
-                    </select>
-                </div>
+                {{/*<div class="form-group has-feedback">*/}}
+                    {{/*<select class="form-control" name="userType">*/}}
+                        {{/*<option value="0">——用户类型——</option>*/}}
+                        {{/*<option value="1">管理员</option>*/}}
+                        {{/*<option value="2">教师</option>*/}}
+                    {{/*</select>*/}}
+                {{/*</div>*/}}
                 <div class="form-group has-feedback">
                     <input type="text" class="form-control" name="username" placeholder="账号">
                     <span class="glyphicon glyphicon-user form-control-feedback"></span>

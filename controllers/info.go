@@ -11,7 +11,10 @@ type InfoController struct {
 
 
 func (c *InfoController) GetTeaList() {
-
+    if !c.IsAjax(){
+		c.TplName = "info/teacher.tpl"
+		return
+	}
 	number:=c.GetString("number")
 	name:=c.GetString("name")
 	pageIndex, _ := c.GetInt("pageIndex")
@@ -20,13 +23,9 @@ func (c *InfoController) GetTeaList() {
 	sortOrder := c.GetString("sortOrder")
 	pager:=m.Pager{pageIndex,pageSize,sortField,sortOrder}
 	teachers, count := m.GetTeacherList(pager,number,name)
-	if c.IsAjax() {
-		c.Data["json"] = &map[string]interface{}{"itemsCount": count, "data": &teachers}
-		c.ServeJSON()
-		return
-	} else {
-		c.TplName = "info/teacher.tpl"
-	}
+	c.Data["json"] = &map[string]interface{}{"itemsCount": count, "data": &teachers}
+	c.ServeJSON()
+	return
 }
 
 func (c *InfoController) SaveTea() {
@@ -66,6 +65,10 @@ func (c *InfoController) DelTea() {
 
 func (c *InfoController) GetStuList() {
 
+	if !c.IsAjax(){
+		c.TplName = "info/student.tpl"
+		return
+	}
 	stuId:=c.GetString("stuId")
 	name:=c.GetString("name")
 	pageIndex, _ := c.GetInt("pageIndex")
@@ -75,13 +78,8 @@ func (c *InfoController) GetStuList() {
 	pager:=m.Pager{pageIndex,pageSize,sortField,sortOrder}
 
 	students, count := m.GetStudentList(pager,stuId,name)
-	if c.IsAjax() {
-		c.Data["json"] = &map[string]interface{}{"itemsCount": count, "data": &students}
-		c.ServeJSON()
-		return
-	} else {
-		c.TplName = "info/student.tpl"
-	}
+	c.Data["json"] = &map[string]interface{}{"itemsCount": count, "data": &students}
+	c.ServeJSON()
 }
 
 
@@ -122,6 +120,10 @@ func (c *InfoController) DelStu() {
 
 func (c *InfoController) GetLesList() {
 
+	if !c.IsAjax(){
+		c.TplName = "info/lesson.tpl"
+		return
+	}
 	number:=c.GetString("number")
 	name:=c.GetString("name")
 	pageIndex, _ := c.GetInt("pageIndex")
@@ -131,13 +133,8 @@ func (c *InfoController) GetLesList() {
 	pager:=m.Pager{pageIndex,pageSize,sortField,sortOrder}
 
 	lessons, count := m.GetLessonList(pager,number,name)
-	if c.IsAjax() {
-		c.Data["json"] = &map[string]interface{}{"itemsCount": count, "data": &lessons}
-		c.ServeJSON()
-		return
-	} else {
-		c.TplName = "info/lesson.tpl"
-	}
+	c.Data["json"] = &map[string]interface{}{"itemsCount": count, "data": &lessons}
+	c.ServeJSON()
 }
 
 
@@ -176,6 +173,10 @@ func (c *InfoController) DelLes() {
 }
 
 func (c *InfoController) GetLecList() {
+	if !c.IsAjax(){
+		c.TplName = "info/lecture.tpl"
+		return
+	}
 	teacherNo:=c.GetString("teacherNo")
 	lessonNo:=c.GetString("lessonNo")
 	term:=c.GetString("term")
@@ -186,13 +187,8 @@ func (c *InfoController) GetLecList() {
 	pager:=m.Pager{pageIndex,pageSize,sortField,sortOrder}
 
 	lessons := m.GetLectureList(pager,teacherNo,lessonNo,term)
-	if c.IsAjax() {
-		c.Data["json"] = &map[string]interface{}{"itemsCount": len(lessons), "data": &lessons}
-		c.ServeJSON()
-		return
-	} else {
-		c.TplName = "info/lecture.tpl"
-	}
+	c.Data["json"] = &map[string]interface{}{"itemsCount": len(lessons), "data": &lessons}
+	c.ServeJSON()
 }
 
 func (c *InfoController) GetLecByTea()  {
@@ -202,7 +198,6 @@ func (c *InfoController) GetLecByTea()  {
 	c.Data["json"]=lessons
 	c.ServeJSON()
 }
-
 
 func (c *InfoController) SaveLec() {
 	u := m.Lecture{}
@@ -239,6 +234,11 @@ func (c *InfoController) DelLec() {
 }
 
 func (c *InfoController) GetClassList() {
+
+	if !c.IsAjax(){
+		c.TplName = "info/class.tpl"
+		return
+	}
 	stuNo:=c.GetString("stuNo")
 	lectureId,_:=c.GetInt("lectureId")
 	pageIndex, _ := c.GetInt("pageIndex")
@@ -247,14 +247,9 @@ func (c *InfoController) GetClassList() {
 	sortOrder := c.GetString("sortOrder")
 	pager:=m.Pager{pageIndex,pageSize,sortField,sortOrder}
 
-	class := m.GetClassList(pager,stuNo,lectureId)
-	if c.IsAjax() {
-		c.Data["json"] = &map[string]interface{}{"itemsCount": len(class), "data": &class}
-		c.ServeJSON()
-		return
-	} else {
-		c.TplName = "info/class.tpl"
-	}
+	class := m.GetClassList(pager,stuNo,"",lectureId)
+	c.Data["json"] = &map[string]interface{}{"itemsCount": len(class), "data": &class}
+	c.ServeJSON()
 }
 
 
@@ -267,16 +262,14 @@ func (c *InfoController) SaveClass() {
 	id, err := u.Save()
 	if err == nil && id > 0 {
 		c.Rsp(true, "Success")
-		return
 	} else {
 		c.Rsp(false, err.Error())
-		return
 	}
 }
 
 func (c *InfoController) DelClass() {
 	u := m.Class{}
-	Id, _ := c.GetInt64("Id")
+	Id, _ := c.GetInt64("id")
 	if Id == 0 {
 		c.Rsp(false, "缺少id")
 		return
@@ -285,9 +278,7 @@ func (c *InfoController) DelClass() {
 	status, err := u.Delete()
 	if err == nil && status > 0 {
 		c.Rsp(true, "Success")
-		return
 	} else {
 		c.Rsp(false, err.Error())
-		return
 	}
 }

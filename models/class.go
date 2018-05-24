@@ -23,7 +23,7 @@ func init()  {
 	orm.RegisterModel(new(Class))
 }
 
-func GetClassList(pager Pager,stuNo string,lecture int) ([]orm.Params) {
+func GetClassList(pager Pager,stuNo,teaNo string,lecture int) ([]orm.Params) {
 	var maps []orm.Params
 	o := orm.NewOrm()
 	sql:="select c.*,les.name as les_name,s.name as stu_name,t.name as tea_name,lec.term as term from "+ClassTable+" as c "
@@ -33,6 +33,9 @@ func GetClassList(pager Pager,stuNo string,lecture int) ([]orm.Params) {
 				" left join "+TeacherTable+" as t on t.number=lec.teacher_no where 1=1 "
 	if stuNo!=""{
 		sql+=" and stu_no = '"+stuNo+"'"
+	}
+	if teaNo!=""{
+		sql+=" and lec.teacher_no = '"+teaNo+"'"
 	}
 	if lecture!=0{
 		sql+=" and lecture_id = "+strconv.Itoa(lecture)+""
@@ -74,6 +77,21 @@ func (t *Class) Delete() (int64, error) {
 	o := orm.NewOrm()
 	status, err := o.Delete(&Class{Id: t.Id})
 	return status, err
+}
+
+func UpdateScore(class []*Class) error {
+	o := orm.NewOrm()
+	o.Begin()
+	for _,item:=range class{
+		qs:=o.QueryTable(ClassTable)
+		_,err:=qs.Filter("LectureId",item.LectureId).Filter("StuNo",item.StuNo).Update(orm.Params{"score":item.Score})
+		if err!=nil{
+			o.Rollback()
+			return err
+		}
+	}
+	o.Commit()
+	return nil
 }
 
 

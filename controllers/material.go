@@ -28,8 +28,12 @@ func (c *MatController) GetMaterialList()  {
 	name:=c.GetString("name")
 	lessonNo:=c.GetString("lessonNo")
 	lessonName:=c.GetString("lessonName")
-	list:=m.GetMaterialList(pager,start,end,name,lessonNo,lessonName)
-	c.Data["json"] = &map[string]interface{}{"itemsCount": len(list), "data": &list}
+
+	userinfo := c.GetSession("userinfo")
+	user:=userinfo.(m.User)
+
+	list,count:=m.GetMaterialList(pager,start,end,name,lessonNo,lessonName,user.Username)
+	c.Data["json"] = &map[string]interface{}{"itemsCount": count, "data": &list}
 	c.ServeJSON()
 	return
 }

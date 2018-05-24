@@ -25,12 +25,12 @@ func init() {
 	orm.RegisterModel(new(Work))
 }
 
-func GetWorkList(pager Pager,lessonNo,lessonName string) ([]orm.Params) {
+func GetWorkList(pager Pager,lessonNo,lessonName,teaNo string) ([]orm.Params) {
 	var maps []orm.Params
 	o := orm.NewOrm()
 	sql:="select n.*,lec.lesson_no as les_no,les.name as les_name,lec.class_time as class_time from "+WorkTable+" as n "
 	sql+=" left join "+LectureTable+" as lec on n.lecture_id=lec.id "+
-		" left join "+LessonTable+" as les on les.number=lec.lesson_no where 1=1 "
+		" left join "+LessonTable+" as les on les.number=lec.lesson_no where lec.teacher_no='"+teaNo+"' "
 	if lessonNo!=""{
 		sql+=" and lec.lesson_no = '"+lessonNo+"'"
 	}

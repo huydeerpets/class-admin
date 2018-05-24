@@ -76,6 +76,18 @@ function initBtnEvent(){
 }
 
 function initForm(){
+    $.ajax({
+        url:'/info/lecture/lectureByTea',
+        success:function(data){
+            if(data!=null){
+                $.each(data,function(i,item){
+                    $('#lectureId').append(
+                        '<option value='+item.id+'>'+item.les_name+'&nbsp'+item.class_time+'</option>'
+                    );
+                })
+            }
+        }
+    });
     $("#classForm").validate({
         rules: {
             name: "required"
@@ -89,7 +101,7 @@ function initForm(){
         submitHandler:function(){
             $(".overlay").show();
             $('#classForm').ajaxSubmit({
-                url:'/info/class/save',
+                url:'/grade/import',
                 type:'post',
                 success:function(data){
                     if(data.status){

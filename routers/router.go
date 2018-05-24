@@ -45,6 +45,7 @@ func init() {
 	beego.Router("/question/ansIndex", &controllers.QuesController{},"*:AnsIndex")
 
 	beego.Router("/grade/index", &controllers.GradeController{}, "*:GetClassList")
+	beego.Router("/grade/import", &controllers.GradeController{}, "*:Import")
 
 	beego.SetStaticPath("/file", "file")
 }

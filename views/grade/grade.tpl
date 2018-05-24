@@ -53,7 +53,7 @@
                         <div class="box-body">
                             <div class="form-inline" style="height:28px">
                                 <div style="float:left">
-                                    <button id="addBtn" class="btn btn-primary btn"><span class="glyphicon glyphicon-plus"></span>&nbsp新建选课信息</button>
+                                    <button id="addBtn" class="btn btn-primary btn"><span class="glyphicon glyphicon-plus"></span>&nbspExcel导入成绩</button>
                                 </div>
                             </div>
                             <div class="form-inline" style="margin:12px 0">
@@ -100,33 +100,28 @@
                         <h4 class="modal-title" id="modalLabel"></h4>
                     </div>
                     <form class="form-horizontal" id="classForm">
-                    <div class="modal-body" style="text-align:center;">
+                        <div class="modal-body" style="text-align:center;">
                             <input type="hidden" name="id" id="id">
                             <div class="box-body">
                                 <div class="form-group">
-                                    <label for="lectureId" class="col-sm-3 control-label">授课号</label>
+                                    <label for="lectureId" class="col-sm-3 control-label">课程</label>
                                     <div class="col-sm-6">
-                                        <input type="text" id="lectureId" name="lectureId" class="form-control">
+                                        <select id="lectureId" name="lectureId" class="form-control"></select>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="stuNo" class="col-sm-3 control-label">学生学号</label>
+                                    <label for="grade" class="col-sm-3 control-label">Excel文件</label>
                                     <div class="col-sm-6">
-                                        <input id="stuNo" name="stuNo" class="form-control">
+                                        <input type="file" id="grade" name="grade" class="form-control">
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="grade" class="col-sm-3 control-label">成绩</label>
-                                    <div class="col-sm-6">
-                                        <input id="grade" name="score" class="form-control">
-                                    </div>
+                                    <label class="note">*</label>
                                 </div>
                             </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary" id="submitBtn">确定</button>
-                        <button type="button" class="btn btn-default closeBtn">取消</button>
-                    </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary" id="submitBtn">确定</button>
+                            <button type="button" class="btn btn-default closeBtn">取消</button>
+                        </div>
                     </form>
                     <div class="overlay" style="display: none;">
                         <i class="fa fa-refresh fa-spin"></i>

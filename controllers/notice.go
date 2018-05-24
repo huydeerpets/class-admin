@@ -21,7 +21,11 @@ func (c *NoticeController) GetNoticeList()  {
 	pager:=m.Pager{pageIndex,pageSize,sortField,sortOrder}
 	lessonNo:=c.GetString("lessonNo")
 	lessonName:=c.GetString("lessonName")
-	list:=m.GetNoticeList(pager,lessonNo,lessonName)
+
+	userinfo := c.GetSession("userinfo")
+	user:=userinfo.(m.User)
+
+	list:=m.GetNoticeList(pager,lessonNo,lessonName,user.Username)
 	c.Data["json"] = &map[string]interface{}{"itemsCount": len(list), "data": &list}
 	c.ServeJSON()
 	return
