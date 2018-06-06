@@ -23,6 +23,6 @@ if [ -f "nohup.out" ]; then
 fi
 go build
 
-nohup go run main.go
+nohup go run main.go &
 
 export GOPATH=$OLD_GOPATH
