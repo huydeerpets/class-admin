@@ -1,8 +1,8 @@
 #!/bin/sh
 OLD_GOPATH=$GOPATH
 
-path=$(cd `dirname $0`; pwd)
-cd $scriptPath/../
+scriptPath=$(cd `dirname $0`; pwd)
+cd $scriptPath/../../
 
 NEW_GOPATH=$('pwd')
 export GOPATH=$OLD_GOPATH:$NEW_GOPATH
