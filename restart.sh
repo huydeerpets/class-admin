@@ -7,18 +7,16 @@ cd $scriptPath/../../
 NEW_GOPATH=$('pwd')
 export GOPATH=$OLD_GOPATH:$NEW_GOPATH
 
-cd src/class-admin
-
-if [ -f ".class-admin.pid" ]; then
-  kill  `cat .class-admin.pid`
-  rm -rf ".class-admin.pid"
+if [ -f ".server-ca.pid" ]; then
+  kill  `cat .server-ca.pid`
+  rm -rf ".server-ca.pid"
 fi
 
-if [ ! -d "logs" ]; then 
+if [ ! -d "logs" ]; then
   mkdir logs
 fi
 
-go install
+go install  class-admin
 
 export GO_MODE="test"
 
