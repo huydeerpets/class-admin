@@ -2,7 +2,7 @@
 OLD_GOPATH=$GOPATH
 
 path=$(cd `dirname $0`; pwd)
-cd $scriptPath/../../
+cd $scriptPath/../
 
 NEW_GOPATH=$('pwd')
 export GOPATH=$OLD_GOPATH:$NEW_GOPATH
