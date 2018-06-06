@@ -10,7 +10,7 @@ cd $scriptPath/../../
 NEW_GOPATH=$('pwd')
 export GOPATH=$OLD_GOPATH:$NEW_GOPATH
 
-cd src
+cd src/class-admin
 
 if [ -f ".server_ca.pid" ]; then
   kill -9 `cat .server_ca.pid`
@@ -21,7 +21,8 @@ echo "==========run=========="
 if [ -f "nohup.out" ]; then
   rm -rf "nohup.out"
 fi
+go build
 
-nohup bee run class-wechat
+nohup go run main.go
 
 export GOPATH=$OLD_GOPATH

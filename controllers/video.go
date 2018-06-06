@@ -5,8 +5,6 @@ import (
 	m "class-admin/models"
 	"time"
 	"class-admin/lib"
-	"path"
-	"strconv"
 	"class-admin/utils"
 )
 
@@ -54,30 +52,15 @@ func (c *VideoController) SaveVideo() {
 		c.Rsp(false, err.Error())
 		return
 	}
-	unix:=strconv.FormatInt(time.Now().Unix(), 10)
 	_,ih,_:=c.GetFile("poster")
 	if ih!=nil{
-		iSuffix:= path.Ext(ih.Filename)
-		ifilename:="poster_"+unix+iSuffix
-		ipath:=path.Join("file","video",ifilename)
-		c.SaveToFile("poster",ipath)
-		u.Poster="/"+ipath
+		u.Poster=utils.UploadFile(ih)
 	}
 	_,vh,_:=c.GetFile("url")
 	if vh!=nil{
-		vSuffix:= path.Ext(vh.Filename)
-		vfilename:="video_"+unix+vSuffix
-		vpath:=path.Join("file","video",vfilename)
-		c.SaveToFile("url",vpath)
-		u.Url="/"+vpath
+		u.Url=utils.UploadFile(vh)
 		if ih==nil{
-			pfile:="poster_"+unix+".jpg"
-			pPath:=path.Join("file","video",pfile)
-			poster:="/"+pPath
-			err:=utils.GetFrame("."+u.Url,"."+poster)
-			if err==nil{
-				u.Poster=poster
-			}
+			u.Poster=u.Url+"?x-oss-process=video/snapshot,t_1,f_jpg,h_0,w_0"
 		}
 	}
 

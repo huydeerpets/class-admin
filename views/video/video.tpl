@@ -46,7 +46,6 @@
         activeDiv=function () {
             $('#video-li').addClass("active");
         };
-        console.log({{.session}})
     </script>
     <div class="content-wrapper">
         <section class="content-header">
