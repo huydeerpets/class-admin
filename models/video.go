@@ -4,7 +4,6 @@ import (
 	"time"
 	"github.com/astaxie/beego/orm"
 	"fmt"
-	"golang.org/x/text/encoding/charmap"
 )
 
 type Video struct {
