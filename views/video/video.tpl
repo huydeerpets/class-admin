@@ -113,7 +113,7 @@
                     </div>
                     <form class="form-horizontal" id="videoForm">
                         <div class="modal-body" style="text-align:center;">
-                            <input type="hidden" name="id" id="id">
+                            <input type="text" style="display:none;" name="id" id="id">
                             <div class="box-body">
                                 <div class="form-group">
                                     <label for="name" class="col-sm-3 control-label">名称</label>

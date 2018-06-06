@@ -25,7 +25,7 @@ func init() {
 	orm.RegisterModel(new(Work))
 }
 
-func GetWorkList(pager Pager,lessonNo,lessonName,teaNo string) ([]orm.Params) {
+func GetWorkList(pager Pager,lessonNo,lessonName,teaNo string) ([]orm.Params,int) {
 	var maps []orm.Params
 	o := orm.NewOrm()
 	sql:="select n.*,lec.lesson_no as les_no,les.name as les_name,lec.class_time as class_time from "+WorkTable+" as n "
@@ -50,14 +50,16 @@ func GetWorkList(pager Pager,lessonNo,lessonName,teaNo string) ([]orm.Params) {
 		offset = (pager.PageIndex - 1) * pager.PageSize
 	}
 	_,err:=o.Raw(sql+" order by "+sort+" limit ? offset ?",pager.PageSize,offset).Values(&maps)
+	var allMaps []orm.Params
+	o.Raw(sql).Values(&allMaps)
 	if err!=nil{
 		fmt.Println(err)
-		return []orm.Params{}
+		return []orm.Params{},0
 	}
 	if len(maps)==0{
-		return []orm.Params{}
+		return []orm.Params{},0
 	}
-	return maps
+	return maps,len(allMaps)
 }
 
 func (t *Work) Save() (id int64, err error) {

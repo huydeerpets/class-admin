@@ -63,7 +63,7 @@ function initTable(){
 
 function initBtnEvent(){
     $('#addBtn').on('click',function(){
-        $('#modalLabel').text('新建选课信息');
+        $('#modalLabel').text('导入成绩');
         $('#classModal').modal();
     });
     $('.closeBtn').on('click',function(){

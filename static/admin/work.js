@@ -68,6 +68,7 @@ function initTable(){
 function initBtnEvent(){
     $('#addBtn').on('click',function(){
         $('#modalLabel').text('布置作业');
+        $('#workForm').validate().resetForm();
         $('#workModal').modal();
     });
     $('.closeBtn').on('click',function(){

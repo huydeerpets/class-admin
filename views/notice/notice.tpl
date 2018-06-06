@@ -99,7 +99,7 @@
                     </div>
                     <form class="form-horizontal" id="noticeForm">
                     <div class="modal-body" style="text-align:center;">
-                            <input type="hidden" name="id" id="id">
+                            <input type="text" style="display:none;" name="id" id="id">
                             <div class="box-body">
                                 <div class="form-group">
                                     <label for="lectureId" class="col-sm-3 control-label">课程</label>

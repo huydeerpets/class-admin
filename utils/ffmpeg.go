@@ -6,7 +6,7 @@ import (
 )
 
 func GetFrame(video string,poster string) error {
-	cmd := exec.Command("ffmpeg", "-i", video,"-ss","00:00:05", "-vframes", "1", "-f", "singlejpeg", "-")
+	cmd := exec.Command("ffmpeg", "-i", video,"-ss","00:00:02", "-vframes", "1", "-f", "singlejpeg", "-")
 	outfile ,err:= os.Create(poster)
 	if err!= nil {
 		return err

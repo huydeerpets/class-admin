@@ -68,6 +68,7 @@ function initTable(){
 function initBtnEvent(){
     $('#addBtn').on('click',function(){
         $('#modalLabel').text('发布通知');
+        $('#noticeForm').validate().resetForm();
         $('#noticeModal').modal();
     });
     $('.closeBtn').on('click',function(){

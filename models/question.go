@@ -30,7 +30,7 @@ func init() {
 	orm.RegisterModel(new(Question))
 }
 
-func GetQuestionList(pager Pager,start,end,lessonNo,lessonName,stuName,teaNo string) ([]orm.Params) {
+func GetQuestionList(pager Pager,start,end,lessonNo,lessonName,stuName,teaNo string) ([]orm.Params,int) {
 	var maps []orm.Params
 	o := orm.NewOrm()
 	sql:="select n.id,n.title,n.question,n.number,n.updated_at"+
@@ -68,12 +68,14 @@ func GetQuestionList(pager Pager,start,end,lessonNo,lessonName,stuName,teaNo str
 	_,err:=o.Raw(sql+" order by "+sort+" limit ? offset ?",pager.PageSize,offset).Values(&maps)
 	if err!=nil{
 		fmt.Println(err)
-		return []orm.Params{}
+		return []orm.Params{},0
 	}
 	if len(maps)==0{
-		return []orm.Params{}
+		return []orm.Params{},0
 	}
-	return maps
+	var allMaps []orm.Params
+	o.Raw(sql).Values(&allMaps)
+	return maps,len(allMaps)
 }
 
 func (t *Question) Save() (id int64, err error) {

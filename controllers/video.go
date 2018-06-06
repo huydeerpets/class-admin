@@ -42,8 +42,8 @@ func (c *VideoController) GetVideoList()  {
 	endString:=c.GetString("endDate")
 	start,end:=checkDate(startString,endString)
 	name:=c.GetString("name")
-	list:=m.GetVideoList(pager,start,end,name)
-	c.Data["json"] = &map[string]interface{}{"itemsCount": len(list), "data": &list}
+	list,count:=m.GetVideoList(pager,start,end,name)
+	c.Data["json"] = &map[string]interface{}{"itemsCount": count, "data": &list}
 	c.ServeJSON()
 	return
 }

@@ -70,7 +70,8 @@ function initTable(){
 
 function initBtnEvent(){
     $('#addBtn').on('click',function(){
-        $('#modalLabel').text('发布通知');
+        $('#modalLabel').text('上传课程资料');
+        $('#matForm').validate().resetForm();
         $('#matModal').modal();
     });
     $('.closeBtn').on('click',function(){

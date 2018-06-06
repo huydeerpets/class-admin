@@ -25,8 +25,8 @@ func (c *NoticeController) GetNoticeList()  {
 	userinfo := c.GetSession("userinfo")
 	user:=userinfo.(m.User)
 
-	list:=m.GetNoticeList(pager,lessonNo,lessonName,user.Username)
-	c.Data["json"] = &map[string]interface{}{"itemsCount": len(list), "data": &list}
+	list,count:=m.GetNoticeList(pager,lessonNo,lessonName,user.Username)
+	c.Data["json"] = &map[string]interface{}{"itemsCount": count, "data": &list}
 	c.ServeJSON()
 	return
 }

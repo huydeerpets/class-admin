@@ -4,6 +4,7 @@ import (
 	"time"
 	"github.com/astaxie/beego/orm"
 	"fmt"
+	"golang.org/x/text/encoding/charmap"
 )
 
 type Video struct {
@@ -29,7 +30,7 @@ func init() {
 	orm.RegisterModel(new(Video))
 }
 
-func GetVideoList(pager Pager,start,end,name string) ([]orm.Params) {
+func GetVideoList(pager Pager,start,end,name string) ([]orm.Params,int) {
 	var maps []orm.Params
 	o := orm.NewOrm()
 	sql:="select * from "+VideoTable+" where 1=1 "
@@ -46,7 +47,7 @@ func GetVideoList(pager Pager,start,end,name string) ([]orm.Params) {
 	if len(pager.SortField) > 0 {
 		sort = pager.SortField + " "+pager.SortOrder
 	} else {
-		sort = "id"
+		sort = "created_at desc"
 	}
 	var offset int
 	if pager.PageIndex <= 1 {
@@ -57,12 +58,14 @@ func GetVideoList(pager Pager,start,end,name string) ([]orm.Params) {
 	_,err:=o.Raw(sql+" order by "+sort+" limit ? offset ?",pager.PageSize,offset).Values(&maps)
 	if err!=nil{
 		fmt.Println(err)
-		return []orm.Params{}
+		return []orm.Params{},0
 	}
 	if len(maps)==0{
-		return []orm.Params{}
+		return []orm.Params{},0
 	}
-	return maps
+	var allMaps []orm.Params
+	o.Raw(sql).Values(&allMaps)
+	return maps,len(allMaps)
 }
 
 func (t *Video) Save() (id int64, err error) {

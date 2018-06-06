@@ -25,8 +25,8 @@ func (c *WorkController) GetWorkList()  {
 	userinfo := c.GetSession("userinfo")
 	user:=userinfo.(m.User)
 
-	list:=m.GetWorkList(pager,lessonNo,lessonName,user.Username)
-	c.Data["json"] = &map[string]interface{}{"itemsCount": len(list), "data": &list}
+	list,count:=m.GetWorkList(pager,lessonNo,lessonName,user.Username)
+	c.Data["json"] = &map[string]interface{}{"itemsCount": count, "data": &list}
 	c.ServeJSON()
 	return
 }
