@@ -18,8 +18,8 @@ if [ -f ".server_ca.pid" ]; then
 fi
 
 echo "==========run=========="
-if [ -f "nohup-ca.out" ]; then
-  rm -rf "nohup-ca.out"
+if [ -f "nohup.out" ]; then
+  rm -rf "nohup.out"
 fi
 
 nohup bee run class-wechat

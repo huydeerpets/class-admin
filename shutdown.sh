@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ -f ".class-admin.pid" ]; then
-  kill  `cat .class-ca.pid`
-  rm -rf ".class-ca.pid"
+if [ -f ".server_ca.pid" ]; then
+  kill  `cat .server_ca.pid`
+  rm -rf ".server_ca.pid"
 fi
