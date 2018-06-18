@@ -3,9 +3,8 @@ package controllers
 import (
 	"class-admin/controllers/rbac"
 	m "class-admin/models"
-	"time"
 	path2 "path"
-	"strconv"
+	"class-admin/utils"
 )
 
 type MatController struct {
@@ -44,14 +43,10 @@ func (c *MatController) Save() {
 		c.Rsp(false, err.Error())
 		return
 	}
-	unix:=strconv.FormatInt(time.Now().Unix(), 10)
 	_,vh,_:=c.GetFile("url")
 	if vh!=nil{
 		vSuffix:= path2.Ext(vh.Filename)
-		vfilename:="material_"+unix+vSuffix
-		vpath:=path2.Join("file","material",vfilename)
-		c.SaveToFile("url",vpath)
-		u.Url="/"+vpath
+		u.Url=utils.UploadFile(vh)
 		u.Extension=vSuffix
 		u.FileName=vh.Filename
 	}
